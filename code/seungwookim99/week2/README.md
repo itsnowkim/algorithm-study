@@ -104,7 +104,8 @@ def solution(board, skill):
 ### 결과
 성공
 ### 접근
-누적합 문제를 빠른 시간복잡도에 풀 수 있는 `imos` 알고리즘으로 해결했다
+누적합 문제를 빠른 시간복잡도에 풀 수 있는 `imos` 알고리즘으로 해결했다.
+
 ## 92344 : 파괴되지 않은 건물 문제 회고
 도저히 나 스스로는 해결하기 어려웠던 문제,,, 문제 해결까지의 과정을 회고해보겠다.
 
@@ -127,3 +128,118 @@ skill을 순회하며 좌표값들을 받아 board를 좌표의 영역만큼 매
 
 ### Ref
 [imos 알고리즘 소개](https://driip.me/65d9b58c-bf02-44bf-8fba-54d394ed21e0)
+
+# kakao_92343 : 양과 늑대
+문제 출처 : https://programmers.co.kr/learn/courses/30/lessons/92343
+## Solved Code
+```python
+def update_candidates(candidates, graph, visited):
+    # 현재 인접한 노드 (candidates)에 대해 방문한 노드(visited)를 고려해 새로운 인접 노드 리스트 계산
+    # ex. 예시 1 경우에서 candidates : {1,8}, visited: {0,1} -> return {2,4,8}
+    candidates_set = set(candidates)
+    for i in visited:
+        candidate_set = set(graph[i])
+        candidates_set |= candidate_set
+    candidates_set -= set(visited)
+    return list(candidates_set)
+
+def dfs(candidates, graph, sheep, wolves, info, visited):
+    '''
+    candidates : 인접 노드 리스트
+    graph : 그래프 정보
+    sheep : 현재까지 모은 양의 수
+    wolves : 현재까지 따라온 늑대 수
+    visited : 현재까지 방문한 노드
+    '''
+    global MAX_NUM
+    
+    # 방문한 적 없는 인접 노드에 양이 존재하지 않을 때까지 노드 방문 후 인접 노드 리스트 갱신
+    new_sheep_num = 0
+    while True:
+        flag = True
+        for i in candidates:
+            if info[i] == 0: # 양이 있다면
+                new_sheep_num += 1 # 모을 수 있는 양 1마리 추가
+                visited.append(i) # 해당 노드는 방문처리
+        candidates = update_candidates(candidates, graph, visited) # 새로운 인접 노드 리스트 갱신
+        for i in candidates:
+            if info[i] == 0: # 만약 갱신된 인접 노드에 양이 존재한다면
+                flag = False # while문 다시 수행
+        if flag :
+            break # 더이상 인접 노드에 양이 없다면 반복문 탈출
+    
+    # 더 이상 이동할 노드가 없거나 or 이동시 늑대에게 모두 잡아먹힌다면 return
+    if not candidates or sheep + new_sheep_num - wolves == 1:
+        if  MAX_NUM < sheep + new_sheep_num: # MAX_NUM 과 비교 후 갱신
+            MAX_NUM = sheep + new_sheep_num
+        return
+    
+    # 인접한 노드에 늑대밖에 없는 상황. 탐색할 후보 노드(candidates) 업데이트 후 탐색
+    for i in candidates:
+        new_candidates = update_candidates(candidates, graph, visited + [i]) # i 노드를 방문했다 가정하고 인접노드 갱신
+        dfs(new_candidates, graph, sheep + new_sheep_num, wolves + 1, info, visited + [i])
+    
+    return
+
+def solution(info, edges):
+    global MAX_NUM
+    graph = [[] for _ in range(18)]
+    
+    # 그래프 정보 저장
+    for from_node, to_node in edges:
+        graph[from_node].append(to_node)
+        graph[to_node].append(from_node)
+    
+    # 최대 양 개수 초기화 (시작시 1마리)
+    MAX_NUM = 1
+    dfs(graph[0],graph,1,0,info,[0])
+    return MAX_NUM
+```
+### 결과
+성공
+### 접근
+테스트 케이스와 문제 조건을 보며 어떤 경우에 최대한 많이 양을 모을 수 있는지 고민했다.
+다음괴 같은 사실들을 발견했다.
+
+- 현재 위치에서 인접한 양들은 전부 모아야한다
+- 늑대가 있는 노드로 이동할 때 `"모인 양 > 따라온 늑대 + 1"` 일때 만 이동할 수 있다
+- 위 두가지 사실을 만족시키며 이동 가능한 모든 노드를 탐색하여 답을 구해야 한다
+
+다음은 문제 해결을 위한 접근이다.
+- graph를 다음과 같은 형태로 저장한다
+```python
+[
+  [1,4,6], # 0번 노드와 인접한 노드들
+  [0,2,3], # 1번 노드와 인접한 노드들
+  ...
+]
+```
+- 지금까지 최대로 모인 양의 수 MAX_NUM = 1로 초기화 한다
+- 0번 노드 방문을 시작으로 dfs를 호출한다.
+
+아래부터는 dfs의 작업 내용이다.
+- 지금까지 방문한 노드들의 인접 노드에 양이 존재하지 않을 때 까지 모든 노드를 방문한다. `(가능한 최대의 양을 모은다)`
+- `update_candidates` 메소드로 방문한 노드들의 인접 노드 리스트를 계산하여 반환한다.
+    - 합집합, 차집합 연산을 이용하여 구현했다
+    - 이미 방문한 적 있는 인접 노드는 제외시킨다
+- 위의 과정을 마치고 나면 아래 세 가지중 하나이다
+    1. 방문한 적 없는 노드가 더이상 없거나
+    2. 방문한 적 없는 인접 노드에 늑대만 존재하며, 이동 시에 양이 모두 잡아먹힌다
+    3. 방문한 적 없는 인접 노드에 늑대만 존재하며, 이동 시에 양이 모두 잡아먹히지 않는다
+- 1,2번의 경우 : `MAX_NUM`과 지금까지 모은 양을 비교하여 `MAX_NUM`을 갱신한다
+- 3번의 경우 : 인접노드를 dfs 재귀 호출을 통해 방문한다
+
+재귀 호출이 전부 끝나면 MAX_NUM을 정답으로 제출한다.
+
+## 92344 : 양과 늑대 문제 회고
+이번 주차에서 가장 오래걸렸던 문제. 그래프로 주어졌기 때문에 dfs를 통해 가능한 모든 경우의 수를 탐색해야 할 것 같았다. 하지만 말 그대로 모든 경우의 수를 탐색하면 Recursion depth 이슈가 발생할 것 같았다.
+
+그래서 고민한 결과 찾은 팩트가 `늑대를 만나러 가기 전까지 가능한 모든 양을 모으는 것`이었다. 지금 생각해보면 현재 노드로부터 인접노드를 우선적으로 탐색하는 bfs 개념인 것 같다.
+
+가능한 많은 양들을 모은 상황에서(인접한 노드들이 늑대만 남았을 때) 호기롭게 늑대를 만나러 가면 된다. 이 과정은 `dfs`로 재귀 호출로 구현했다.
+
+또 굳이 방문하면 모두 양들이 잡아먹히는 경우는 return해서 dfs 호출 횟수를 줄였다.
+
+이렇게 적고 보면 되게 간단하게 푼 것 같은데 오랜만에 재귀함수를 구현해서 그런지 너무 오래걸렸다ㅠㅠ... 그리고 `MAX_NUM` 이라는 global 변수를 처음 써봤는데, 처음엔 이 전역 변수 없이 구현해서 최대로 모은 양 비교시에 애를 먹었다.
+
+물론 충분한 시간이 주어져서 풀었지만 실전에서 빠르게 풀기 위해 그래프 탐색 유형을 많이 다뤄봐야할 것 같다.
