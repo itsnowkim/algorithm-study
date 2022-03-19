@@ -97,6 +97,16 @@ code
 
 ### **Week 3**
 
+
+총무  : sukyeongs(2)
+
+
+필수 문제
+- https://programmers.co.kr/learn/courses/30/lessons/92345
+- https://programmers.co.kr/learn/courses/30/lessons/77485
+- https://programmers.co.kr/learn/courses/30/lessons/77486
+
+
 ### **Week 4**
 
 ### **Week 5**
