@@ -220,3 +220,46 @@ https://tech.kakao.com/2022/01/14/2022-kakao-recruitment-round-1/
     ```
     
 <br />
+
+# 3. 다단계 칫솔 판매
+
+## 풀이
+### 📁 주어진 입력 및 예시 이해
+|이름|설명|예시|
+|------|---|---|
+|enroll|각 판매원의 이름을 담은 배열|['john', 'mary', 'edward', 'sam', 'emily', 'jaimie', 'tod', 'young']|
+|referral|각 판매원을 다단계 조직에 참여시킨 다른 판매원의 이름을 담은 배열|['-', '-', 'mary', 'edward', 'mary', 'mary', 'jaimie', 'edward']|
+|seller|판매량 집계 데이터의 판매원 이름을 나열한 배열|['young', 'john', 'tod', 'emily', 'mary']|
+|amount|판매량 집계 데이터의 판매 수량을 나열한 배열|[12, 4, 2, 5, 10]|
+
+### 📁 솔루션 함수
+함수 내 변수 설명
+|이름|설명|예시|
+|------|---|---|
+|answer|각 판매원의 이름과 이 사람에게 배분된 이익금의 총합이 나열된 딕셔너리|{'john': 360, 'mary': 958, 'edward': 108, 'sam': 0, 'emily': 450, 'jaimie': 18, 'tod': 180, 'young': 1080}|
+|parent|각 판매원의 이름과 이 사람을 다단계 조직에 참여시킨 다른 판매원의 이름을 담은 딕셔너리|{'-': '-', 'john': '-', 'mary': '-', 'edward': 'mary', 'sam': 'edward', 'emily': 'mary', 'jaimie': 'mary', 'tod': 'jaimie', 'young': 'edward'}|
+
+저번주 코드리뷰를 하며 새로 알게된 딕셔너리에서 value 값만 추출해 반환하는 법을 사용했다. 코드리뷰가 정말 큰 도움이 되는구나라는 생각..! 
+- 참고 : https://github.com/gimkuku/algorithm-study/blob/master/code/S-J-Kim/week2/kakao_92334.py 중 `return list(mail_count.values())` 부분
+
+```python
+import math
+
+def solution(enroll, referral, seller, amount):
+    answer = {name: 0 for name in enroll}
+    parent = {'-':'-'}
+
+    for i in range(len(enroll)):
+        parent[enroll[i]] = referral[i]
+
+    for i in range(len(seller)):
+        people = seller[i]
+        profit = amount[i]*100
+        while people != "-" and profit >= 1:
+            answer[people] += math.ceil(profit*0.9)
+            profit -= math.ceil(profit*0.9)
+            people = parent[people]
+
+    return list(answer.values())
+```
+<br />
