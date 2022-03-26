@@ -75,6 +75,10 @@ code
 
 필수 문제
 
+
+총무 : danbom(3)
+
+
 - https://programmers.co.kr/learn/courses/30/lessons/92335
 - https://programmers.co.kr/learn/courses/30/lessons/92342
 - https://programmers.co.kr/learn/courses/30/lessons/92341
@@ -108,6 +112,11 @@ code
 
 
 ### **Week 4**
+
+- https://programmers.co.kr/learn/courses/30/lessons/72412
+- https://programmers.co.kr/learn/courses/30/lessons/72413
+- https://programmers.co.kr/learn/courses/30/lessons/72414
+
 
 ### **Week 5**
 
