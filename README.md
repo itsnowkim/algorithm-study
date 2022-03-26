@@ -113,6 +113,12 @@ code
 
 ### **Week 4**
 
+
+총무 : danbom(3)
+
+
+필수 문제
+
 - https://programmers.co.kr/learn/courses/30/lessons/72412
 - https://programmers.co.kr/learn/courses/30/lessons/72413
 - https://programmers.co.kr/learn/courses/30/lessons/72414
