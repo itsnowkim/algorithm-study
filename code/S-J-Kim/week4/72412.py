@@ -1,51 +1,34 @@
+from collections import defaultdict
+from itertools import product
+from bisect import bisect_left
+
+
 def solution(info, query):
     answer = []
+    maskarr = list(product([True, False], repeat=4))
+    info_dict = defaultdict(list)
 
-    lang = {"java": set([]), "python": set([]), "cpp": set([])}
-    part = {"backend": set([]), "frontend": set([])}
-    exp = {"senior": set([]), "junior": set([])}
-    soul = {"pizza": set([]), "chicken": set([])}
-    scores = []
+    for command in info:
+        splited = command.split()
+        infomation = splited[:-1]
+        for mask in maskarr:
+            info_dict[
+                "".join(
+                    [
+                        type_name if mask_bit else "-"
+                        for (type_name, mask_bit) in zip(infomation, mask)
+                    ]
+                )
+            ].append(int(splited[-1]))
 
-    for (idx, infomation) in enumerate(info):
-        ilang, ipart, iexp, isoul, score = infomation.split()
-
-        lang[ilang].add(idx)
-        part[ipart].add(idx)
-        exp[iexp].add(idx)
-        soul[isoul].add(idx)
-        scores.append(score)
+    for key in info_dict.keys():
+        info_dict[key].sort()
 
     for command in query:
-        ans = 0
-        splited = command.split(" and ")
-        splited[-1:] = splited[-1].split()
-
-        ilang, ipart, iexp, isoul, score = splited
-
-        arr = set([])
-
-        arr |= (
-            lang[ilang]
-            if not ilang == "-"
-            else lang["java"] | lang["python"] | lang["cpp"]
-        )
-
-        if ipart != "-" and arr:
-            arr &= part[ipart]
-
-        if iexp != "-" and arr:
-            arr &= exp[iexp]
-
-        if isoul != "-" and arr:
-            arr &= soul[isoul]
-
-        if arr:
-            for candidate in list(arr):
-                if int(scores[candidate]) >= int(score):
-                    ans += 1
-
-        answer.append(ans)
+        lang, _, part, __, year, ___, soul, score = command.split()
+        key = "".join([lang, part, year, soul])
+        ans = bisect_left(info_dict[key], int(score))
+        answer.append(len(info_dict[key]) - ans)
 
     return answer
 
