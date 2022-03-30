@@ -16,7 +16,7 @@ def solution(info, query):
         info_dict[key].sort()
 
     for q in query:
-        q = q.split(' ')
+        q = q.split()
         query_score = int(q[-1])
         q = q[:-1]
 
