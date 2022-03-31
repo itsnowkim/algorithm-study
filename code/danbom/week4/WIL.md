@@ -71,3 +71,93 @@ def solution(info, query):
     return result
 ```
 <br />
+
+# 2. 합승 택시 요금
+## 참고
+https://bladejun.tistory.com/129 <br />
+https://www.daleseo.com/python-heapq/ <br />
+https://youtu.be/qaiuC3Q73-M <br />
+
+다익스트라 알고리즘은 최단거리를 찾아주는 알고리즘이다. 방문했던 노드와 그 노드까지의 cost, 지금까지의 경로를 저장하고, 방문한 노드들로부터 이어지는 경로를 순서대로 탐색하며 가중치를 더해간다. 경로를 탐색하며 방문했던 노드를 또 방문하게 되는 경우 cost를 비교해 더 작은 값을 채택하며 더 큰 값을 가진 경로는 더 이상 탐색하지 않는다. <br />
+
+블로그에선 먼저 `[cost, node]`가 담긴 리스트를 만들고, 이를 힙으로 변환하는 방법을 사용했는데 테스트 결과 **40ms ~ 4161ms**가 나왔다.
+```python
+# 기존 코드
+heap = [[0, s]]
+heapq.heapify(heap)
+```
+`heapq` 사용법을 찾아보며 리스트를 만들고 변환하는 방법이 아닌, 빈 리스트를 생성하고 여기에 `heapq` 모듈을 통해 원소를 추가하는 방법으로 테스트한 결과 **39ms ~ 4028ms**가 나왔다. 최소, 최대 값은 비슷하지만 대부분의 테스트 시간값들이 후자에서 더 작았다.
+```python
+# 바꾼 코드
+heap = []
+heapq.heappush(heap, [0, s])
+```
+<br />
+
+최댓값을 주고 싶을 때, `sys`를 import해 `sys.maxsize`를 사용하면 되는 것을 알게되었다.
+```python
+visit = [sys.maxsize]*(n+1)
+```
+<br />
+
+## 풀이
+### 📁 주어진 입력 및 예시 이해
+|이름|설명|예시|
+|------|---|---|
+|n|지점의 개수|6|
+|s|출발지점|4|
+|a|`A`의 도착지점|6|
+|b|`B`의 도착지점|2|
+|fares|지점 사이의 예상 택시요금|[[4, 1, 10], [3, 5, 24], [5, 6, 2], [3, 1, 41], [5, 1, 24], [4, 6, 50], [2, 4, 66], [2, 3, 22], [1, 6, 25]]|
+
+### 📁 솔루션 함수
+함수 내 변수 설명
+|이름|설명|예시|
+|------|---|---|
+|result|A, B 두 사람이 s에서 출발해서 각각의 도착 지점까지 택시를 타고 간다고 가정할 때, 예상되는 최저 택시요금|82|
+|graph|각 지점 별 `(연결되어있는 지점, 그 지점까지의 택시요금)`들이 담긴 배열|[[], [[4, 10], [3, 41], [5, 24], [6, 25]], [[4, 66], [3, 22]], [[5, 24], [1, 41], [2, 22]], [[1, 10], [6, 50], [2, 66]], [[3, 24], [6, 2], [1, 24]], [[5, 2], [4, 50], [1, 25]]]|
+|visit|각 노드 별 주어진 시작 지점에서부터의 최저 택시요금(길이 없는 경우, `sys.maxsize` 값이 담겨있다.)이 담겨 있는 배열|[9223372036854775807, 10, 66, 51, 0, 34, 35]|
+|heap|`[cost, node]`들이 담긴 힙|[[50, 6], [66, 2]]|
+
+```python
+import sys
+import heapq
+
+def solution(n, s, a, b, fares):
+    result = sys.maxsize
+    graph = [[] for _ in range(n+1)]
+    
+    for i, j, cost in fares:
+        graph[i].append([j, cost])
+        graph[j].append([i, cost])
+        
+    def dijkstra(s, e):
+        visit = [sys.maxsize]*(n+1)
+
+        visit[s] = 0
+
+        heap = []
+        heapq.heappush(heap, [0, s])
+
+        while heap:
+            cost, node = heapq.heappop(heap)
+
+            if cost > visit[node]:
+                continue
+
+            for new_node, new_cost in graph[node]:
+                new_cost += cost
+
+                if new_cost < visit[new_node]:
+                    visit[new_node] = new_cost
+
+                    heapq.heappush(heap, [new_cost, new_node])
+
+        return visit[e]
+            
+    for i in range(1, n+1):
+        result = min(result, dijkstra(s, i) + dijkstra(i, a) + dijkstra(i, b))
+        
+    return result
+```
+<br />
