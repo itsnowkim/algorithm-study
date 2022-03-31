@@ -161,3 +161,77 @@ def solution(n, s, a, b, fares):
     return result
 ```
 <br />
+
+# 3. 광고 삽입
+## 참고
+https://dev-note-97.tistory.com/156 <br />
+
+블로그를 참고해서 푸는데도 아이디어를 이해하는 데에 시간이 오래 걸렸다.. 이번주 세문제 중엔 나 혼자 풀 수 있는 문제가 없었다.ㅠ
+
+## 풀이
+문자열 형식의 시간을 정수 형식의 초로, 정수 형식의 초를 문자열 형식의 시간으로 바꾸는 함수는 간단하므로 패쓰.
+### 📁 주어진 입력 및 예시 이해
+|이름|설명|예시|
+|------|---|---|
+|play_time|"죠르디"의 동영상 재생시간 길이|"02:03:55"|
+|adv_time|공익광고의 재생시간 길이|"00:14:15"|
+|logs|시청자들이 해당 동영상을 재생했던 구간 정보|["01:20:15-01:45:14", "00:40:31-01:00:00", "00:25:50-00:48:29", "01:30:59-01:53:29", "01:37:44-02:02:30"]|
+
+### 📁 솔루션 함수
+함수 내 변수 설명
+|이름|설명|예시|
+|------|---|---|
+|view|시간을 초로 쪼갰을 때, 각 초마다의 누적 시청자 수가 담긴 배열|[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  ...|
+|section_view|반복문을 통해 시청자수가 가장 많은 구간을 탐색할 때, 해당 구간의 시청자수|2160|
+|result|시청자들의 누적 재생시간이 가장 많이 나오는 곳의 시작 시각을 초로 나타낸 값|5459|
+
+```python
+def time_to_sec(time):
+    h, m, s = time.split(':')
+    return int(h) * 3600 + int(m) * 60 + int(s)
+
+
+def sec_to_time(sec):
+    h = sec // 3600
+    h = '0' + str(h) if h < 10 else str(h)
+    sec = sec % 3600
+    m = sec // 60
+    m = '0' + str(m) if m < 10 else str(m)
+    sec = sec % 60
+    s = '0' + str(sec) if sec < 10 else str(sec)
+    return h + ':' + m + ':' + s
+
+def solution(play_time, adv_time, logs):
+    play_time = time_to_sec(play_time)
+    adv_time = time_to_sec(adv_time)               
+    view = [0 for _ in range(play_time + 1)]
+
+    for l in logs:
+        start, end = l.split('-')
+        start = time_to_sec(start)
+        end = time_to_sec(end)
+        view[start] += 1
+        view[end] -= 1
+
+    # 구간별 시청자수 기록 : (i-1부터 i까지) 1초 동안의 시청자수
+    for i in range(1, len(view)):
+        view[i] += view[i - 1]
+
+    # 모든 구간 시청자 누적 기록 : 0부터 i초 까지의 누적 시청자 수
+    for i in range(1, len(view)):
+        view[i] += view[i - 1]
+
+    # 누적된 시청자수(view)로 가장 시청자수가 많은 구간 탐색
+    section_view, result = 0, 0
+    for i in range(adv_time - 1, play_time):
+        if i >= adv_time:
+            if section_view < view[i] - view[i - adv_time]:
+                section_view = view[i] - view[i - adv_time]
+                result = i - adv_time + 1
+        elif section_view < view[i]:
+            section_view = view[i]
+            result = i - adv_time + 1
+
+    return sec_to_time(result)
+```
+<br />
