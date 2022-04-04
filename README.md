@@ -126,6 +126,17 @@ code
 
 ### **Week 5**
 
+
+총무 : seungwookim99(4)
+
+
+필수문제
+
+- https://programmers.co.kr/learn/courses/30/lessons/72415
+- https://programmers.co.kr/learn/courses/30/lessons/60062
+- https://programmers.co.kr/learn/courses/30/lessons/17683
+
+
 ### **Week 6**
 
 
