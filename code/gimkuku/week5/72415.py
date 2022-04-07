@@ -1,7 +1,7 @@
 from collections import deque
 
 def solution(board, r, c):
-    answer = 5000
+    # answer = 0
     # 한줄로 붙여버리기
     board = ''.join(str(each) for row in board for each in row)
     directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
@@ -53,7 +53,7 @@ def solution(board, r, c):
                 # 다시 안까진 상태(enter = -1)로 바꾸고, enter 눌렀으니까 count++
                 que.append((y, x, count + 1, -1, board))
             # 아무것도 아니면 쿨하게 패스
-    return answer
+    return count
 
 def ctrl_move(y, x, dy, dx, board):
     ny, nx = y + dy, x + dx

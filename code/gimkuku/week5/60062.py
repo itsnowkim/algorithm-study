@@ -39,7 +39,8 @@ def solution(n, weak, dist):
     answer = len(dist) + 1
     
     for i in friends_per:
-        answer = min(answer,go_friend(weak, i ,dist_list))
+        answer = min(answer, go_friend(weak, i, dist_list))
+        
     # 불가능하면 -1 로 리턴
     if answer > len(dist):
         return - 1
