@@ -5,7 +5,7 @@
 - https://programmers.co.kr/learn/challenges
 - 고정된 스터디 시간 없이, 마감일까지 각자 공부하고 파트너의 코드 리뷰
 - 돌아가면서 총무
-- gimkuku(0) -> ujunhwan(1) -> sukyeongs(2) -> danbom(3) -> seungwookim99(4) -> S-J-Kim(5)
+- gimkuku(0) -> ujunhwan(1) -> gyun-ky(2) -> danbom(3) -> seungwookim99(4) -> S-J-Kim(5)
 
 
 1. 시작
@@ -75,17 +75,67 @@ code
 
 필수 문제
 
+
+총무 : danbom(3)
+
+
 - https://programmers.co.kr/learn/courses/30/lessons/92335
 - https://programmers.co.kr/learn/courses/30/lessons/92342
 - https://programmers.co.kr/learn/courses/30/lessons/92341
 
+
 ### **Week 2**
+
+
+총무  : ujunhwan(1)
+
+
+**2022 KAKAO BLIND RECRUITMENT**
+
+
+필수 문제
+- https://programmers.co.kr/learn/courses/30/lessons/92343
+- https://programmers.co.kr/learn/courses/30/lessons/92344
+- https://programmers.co.kr/learn/courses/30/lessons/92334
+
 
 ### **Week 3**
 
+
+총무  : sukyeongs(2)
+
+
+필수 문제
+- https://programmers.co.kr/learn/courses/30/lessons/92345
+- https://programmers.co.kr/learn/courses/30/lessons/77485
+- https://programmers.co.kr/learn/courses/30/lessons/77486
+
+
 ### **Week 4**
 
+
+총무 : danbom(3)
+
+
+필수 문제
+
+- https://programmers.co.kr/learn/courses/30/lessons/72412
+- https://programmers.co.kr/learn/courses/30/lessons/72413
+- https://programmers.co.kr/learn/courses/30/lessons/72414
+
+
 ### **Week 5**
+
+
+총무 : seungwookim99(4)
+
+
+필수문제
+
+- https://programmers.co.kr/learn/courses/30/lessons/72415
+- https://programmers.co.kr/learn/courses/30/lessons/60062
+- https://programmers.co.kr/learn/courses/30/lessons/17683
+
 
 ### **Week 6**
 
@@ -97,7 +147,7 @@ code
 
 - [gimkuku](https://github.com/gimkuku)
 - [ujunhwan](https://github.com/ujunhwan)
-- [sukyeongs](https://github.com/sukyeongs)
+- [gyun-ky](https://github.com/gyun-ky)
 - [danbom](https://github.com/danbom)
 - [seungwookim99](https://github.com/seungwookim99)
 - [S-J-Kim](https://github.com/S-J-Kim)
