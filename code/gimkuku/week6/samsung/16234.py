@@ -32,10 +32,11 @@ def solution(n, l, r, board):
                             q.append([idx, jdx])
                             flag = True
                             break
-                if flag:
-                    break
-                else:
-                    visited[idx][jdx] = 1
+                    
+                if flag: break
+                else: visited[idx][jdx] = 1
+            if flag: break
+            
 
         
         # 새로운 연합 시작
