@@ -61,31 +61,22 @@ def solution(n, board):
         if flag:
             break
         else:
+            # 물고기 중에 젤 왼쪽 위에 있는 애 먹기 
             caneat.sort(key=lambda x: (x[0],x[1]))
-            print(caneat)
-            print("물고기 먹기",caneat[0][0], caneat[0][1], shark)
+            # print(caneat)
+            # print("물고기 먹기",caneat[0][0], caneat[0][1], shark)
             answer = caneat[0][2]
             eating += 1
             if eating == shark:
                 shark += 1
                 eating = 0
-                print("상어 연령 증가", shark)
+                # print("상어 연령 증가", shark)
             board[caneat[0][0]][caneat[0][1]] = 0
             sharkx = caneat[0][0]
             sharky = caneat[0][1]
 
     print(answer)
-    # 물고기 중에 젤 왼쪽 위에 있는 애 먹기 
     
-
-                
-
-        
-    
-        
-
-
-
 
 n = int(input())
 board = []
