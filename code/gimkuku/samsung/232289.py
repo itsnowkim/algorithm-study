@@ -62,6 +62,7 @@ def solution(r, c, k, b, wall):
                         board[prevxmax + 1][y] += 5 - i
                         n_prev.append((prevxmax + 1,y))
                         prevxmax += 1
+
                     # 대각선 아래
                     if x - i > 0:
                         if str(x-1) + "_" + str(y) in wall: continue
@@ -70,6 +71,7 @@ def solution(r, c, k, b, wall):
                         board[prevxmin - 1][y] += 5 - i
                         n_prev.append((prevxmin - 1,y))
                         prevxmin -= 1
+
                 # 위아래으로 움직일때
                 else:
                     # 오른쪽 
