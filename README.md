@@ -137,7 +137,17 @@ code
 - https://programmers.co.kr/learn/courses/30/lessons/17683
 
 
-### **Week 6**
+### **Week 7**
+
+
+총무 : S-J-Kim(5)
+
+
+필수 문제
+
+- https://programmers.co.kr/learn/courses/30/lessons/60058
+- https://programmers.co.kr/learn/courses/30/lessons/60063
+- https://programmers.co.kr/learn/courses/30/lessons/60060
 
 
 ---
