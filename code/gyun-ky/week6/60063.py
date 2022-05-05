@@ -136,6 +136,7 @@ def bfs(board, a, b, c, d, shape):
     while q:
         ca, cb, cc, cd, s, cnt = q.popleft()
         
+        # 두개의 좌표중 하나가 (N-1,N-1)을 포함하는 경우 끝
         if (ca==N-1 and cb==N-1) or (cc == N-1 and cd == N-1):
             return cnt
         
